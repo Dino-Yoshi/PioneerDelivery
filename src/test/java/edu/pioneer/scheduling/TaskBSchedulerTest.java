@@ -64,22 +64,14 @@ class TaskBSchedulerTest {
 
     @Test
     void staggeredOverlapsNeedTwoDrivers() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("first", 1, 4),
-                new Delivery("second", 2, 5),
-                new Delivery("third", 4, 7),
-                new Delivery("fourth", 5, 8));
+        List<Delivery> deliveries = List.of(new Delivery("first", 1, 4), new Delivery("second", 2, 5), new Delivery("third", 4, 7), new Delivery("fourth", 5, 8));
 
         assertEquals(2, scheduler.assignDrivers(deliveries).size());
     }
 
     @Test
     void everyDeliveryIsAssignedOnceAndEachDriverIsConflictFree() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("late", 6, 9),
-                new Delivery("first", 1, 4),
-                new Delivery("middle", 2, 5),
-                new Delivery("next", 4, 6));
+        List<Delivery> deliveries = List.of(new Delivery("late", 6, 9), new Delivery("first", 1, 4), new Delivery("middle", 2, 5), new Delivery("next", 4, 6));
 
         List<Driver> drivers = scheduler.assignDrivers(deliveries);
         List<Delivery> assigned = drivers.stream().flatMap(driver -> driver.getDeliveries().stream()).toList();

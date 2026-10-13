@@ -81,12 +81,10 @@ public final class MainWindow extends BorderPane {
         taskAResult.getStyleClass().add("result");
         taskBResult.getStyleClass().add("result");
         taskCResult.getStyleClass().add("result");
-        VBox content = new VBox(20,
-                header,
-                status,
-                taskSection("Task A", "Maximum Deliveries for One Driver", taskAResult),
-                taskSection("Task B", "Minimum Drivers to Complete All Deliveries", taskBResult),
-                taskSection("Task C", "Deliveries Rejected for One Driver", taskCResult));
+        VBox taskASection = taskSection("Task A", "Maximum Deliveries for One Driver", taskAResult);
+        VBox taskBSection = taskSection("Task B", "Minimum Drivers to Complete All Deliveries", taskBResult);
+        VBox taskCSection = taskSection("Task C", "Deliveries Rejected for One Driver", taskCResult);
+        VBox content = new VBox(20, header, status, taskASection, taskBSection, taskCSection);
         content.getStyleClass().add("main-content");
         ScrollPane scrollPane = new ScrollPane(content);
         scrollPane.setFitToWidth(true);
@@ -185,8 +183,7 @@ public final class MainWindow extends BorderPane {
             Label driverName = label("Driver " + driver.getId(), "driver-name");
             VBox schedule = new VBox(5);
             for (Delivery delivery : driver.getDeliveries()) {
-                Label scheduleEntry = label(delivery.getId() + "  (" + delivery.getStartTime()
-                        + "–" + delivery.getFinishTime() + ")", "driver-delivery");
+                Label scheduleEntry = label(delivery.getId() + "  (" + delivery.getStartTime() + "–" + delivery.getFinishTime() + ")", "driver-delivery");
                 scheduleEntry.setWrapText(true);
                 schedule.getChildren().add(scheduleEntry);
             }
