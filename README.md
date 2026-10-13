@@ -35,6 +35,8 @@ The files in `data/` exercise different outcomes. Counts are based on accepted r
 
 Loading `mixed-input.csv` also shows the skipped-row diagnostic log path in the workbench.
 
+The complete required-case inputs are in [ATestValues](data/ATestValues), [BTestValues](data/BTestValues), and [CTestValues](data/CTestValues). Each directory has `case-1.csv` through `case-6.csv`, matching the numbered cases below. The `case-1.csv` files are intentionally empty: they test zero-delivery input. `RequiredCaseCsvTest` loads all 18 files, checks their intervals against the required cases, and checks the corresponding task result.
+
 ## Program organization
 
 | Location | Responsibility |
@@ -57,7 +59,7 @@ The schedulers do not read files, write logs, or depend on JavaFX. The file read
 
 ## Required case results
 
-The following are the course assignment's six cases for each task. These observed counts are asserted by `TaskASchedulerTest`, `TaskBSchedulerTest`, and `TaskCSchedulerTest` and passed in the verification run below. Where multiple optimal schedules exist, the tests check the count and schedule validity without requiring one particular ID selection or driver mapping.
+The following are the course assignment's six cases for each task. These observed counts are asserted by `TaskASchedulerTest`, `TaskBSchedulerTest`, `TaskCSchedulerTest`, and the CSV-backed `RequiredCaseCsvTest`. Where multiple optimal schedules exist, the tests check the count and schedule validity without requiring one particular ID selection or driver mapping.
 
 ### Task A — selected deliveries
 
@@ -94,6 +96,6 @@ The following are the course assignment's six cases for each task. These observe
 
 ## Verification evidence
 
-On October 13, 2026, `./mvnw clean verify` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **48 tests, 0 failures, 0 errors, 0 skipped**. Besides the required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the baseline sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count. The counts for the other files in `data/` were checked by calling the same reader and schedulers directly.
+On October 13, 2026, `./mvnw clean verify` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **66 tests, 0 failures, 0 errors, 0 skipped**. Besides the 18 CSV-backed required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the baseline sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count. The counts for the other example files in `data/` were checked by calling the same reader and schedulers directly.
 
 With the same JDK, `./run.sh` reached JavaFX startup and Maven exited successfully in a graphical session. This is a launch check, not an automated visual UI test.
