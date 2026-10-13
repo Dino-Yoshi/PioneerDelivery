@@ -3,11 +3,15 @@ package edu.pioneer.input;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Parses one CSV row while retaining field positions for diagnostics. */
+/**
+ * Parses one CSV row, including quoted fields and escaped quotes.
+ * Field positions are one-based character offsets for skipped-row diagnostics.
+ */
 final class CsvRowParser {
     private CsvRowParser() {
     }
 
+    /** Returns trimmed fields without deciding whether they form a valid delivery. */
     static ParsedRow parse(String line) throws CsvFormatException {
         List<String> fields = new ArrayList<>();
         List<Integer> positions = new ArrayList<>();
@@ -18,6 +22,7 @@ final class CsvRowParser {
         for (int index = 0; index < line.length(); index++) {
             char character = line.charAt(index);
             if (quoted) {
+                // Two consecutive quotes encode one literal quote inside a field.
                 if (character == '"' && index + 1 < line.length() && line.charAt(index + 1) == '"') {
                     field.append('"');
                     index++;
@@ -34,6 +39,7 @@ final class CsvRowParser {
                 quoteClosed = false;
                 fieldPosition = index + 2;
             } else if (quoteClosed) {
+                // After a closing quote, only whitespace or a delimiter is valid.
                 if (!Character.isWhitespace(character)) {
                     throw new CsvFormatException("Unexpected character after closing quote", index + 1,
                             availableId(fields, field));

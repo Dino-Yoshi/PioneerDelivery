@@ -4,7 +4,10 @@ import edu.pioneer.model.Delivery;
 import java.nio.file.Path;
 import java.util.List;
 
-/** The accepted dataset and counts from one successfully opened CSV file. */
+/**
+ * A snapshot of accepted records and counts from one successfully opened CSV.
+ * The diagnostic path is present only when at least one row was skipped.
+ */
 public final class ProcessingReport {
     private final List<Delivery> deliveries;
     private final int totalRows;

@@ -4,14 +4,13 @@ Pioneer Delivery is a Java 25 desktop application for fixed-interval delivery sc
 
 ## Build and run
 
-Install JDK 25 and Maven 3.9 or newer. Set `JAVA_HOME` to the JDK 25 installation and check that `mvn -version` reports Java 25. From the repository root, run:
+Install JDK 25 and set `JAVA_HOME` to it. On Linux or macOS, launch from the repository root with:
 
 ```sh
-mvn clean verify
-mvn javafx:run
+./run.sh
 ```
 
-The second command opens the JavaFX desktop window in a graphical session. Choose [data/sample-deliveries.csv](data/sample-deliveries.csv) to try the included dataset. The project uses JavaFX 25.0.2 and JUnit 5.11.4; Maven resolves those dependencies on the first build.
+On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. To run the tests, use `./mvnw clean verify` (or `mvnw.cmd clean verify` on Windows). The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
 
 ## Input and example data
 
@@ -25,7 +24,16 @@ The line above describes the fields; do not put it in the file as a header. For 
 
 The chooser offers `.csv` files, and the reader independently rejects other filename extensions. Invalid rows are skipped while valid rows continue to load. The workbench reports total nonblank, accepted, and skipped row counts. If rows are skipped, the status states that results use accepted records only and gives the actual diagnostic log path. A missing, unreadable, or non-CSV file is a load error; an opened empty CSV file is a valid empty dataset.
 
-The included [sample file](data/sample-deliveries.csv) has seven accepted deliveries in unsorted order. It produces Task A = 3 selected deliveries, Task B = 3 drivers, and Task C = 4 rejected deliveries.
+The files in `data/` exercise different outcomes. Counts are based on accepted records only:
+
+| File | Scenario | Accepted / skipped | Task A selected | Task B drivers | Task C rejected |
+| --- | --- | ---: | ---: | ---: | ---: |
+| [sample-deliveries.csv](data/sample-deliveries.csv) | Unsorted baseline | 7 / 0 | 3 | 3 | 4 |
+| [back-to-back.csv](data/back-to-back.csv) | Shared endpoints; one driver handles all requests | 7 / 0 | 7 | 1 | 0 |
+| [rush-hour.csv](data/rush-hour.csv) | Dense overlaps requiring several drivers | 12 / 0 | 3 | 4 | 9 |
+| [mixed-input.csv](data/mixed-input.csv) | Invalid times, duplicate and blank IDs, extra field | 5 / 5 | 4 | 2 | 1 |
+
+Loading `mixed-input.csv` also shows the skipped-row diagnostic log path in the workbench.
 
 ## Program organization
 
@@ -86,6 +94,6 @@ The following are the course assignment's six cases for each task. These observe
 
 ## Verification evidence
 
-On October 12, 2026, `mvn clean verify` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **48 tests, 0 failures, 0 errors, 0 skipped**. Besides the required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the included sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count.
+On October 13, 2026, `./mvnw clean verify` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **48 tests, 0 failures, 0 errors, 0 skipped**. Besides the required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the baseline sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count. The counts for the other files in `data/` were checked by calling the same reader and schedulers directly.
 
-With the same JDK, `mvn javafx:run` compiled and launched the application in a graphical session without a launch exception; the process remained running until it was intentionally stopped after ten seconds. This is a launch check, not an automated visual UI test.
+With the same JDK, `./run.sh` reached JavaFX startup and Maven exited successfully in a graphical session. This is a launch check, not an automated visual UI test.

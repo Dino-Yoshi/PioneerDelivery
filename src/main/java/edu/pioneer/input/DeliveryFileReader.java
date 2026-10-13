@@ -15,6 +15,10 @@ import java.util.Set;
 
 /** Loads one validated dataset from a headerless delivery CSV file. */
 public final class DeliveryFileReader {
+    /**
+     * Returns accepted deliveries and row counts while logging and skipping bad rows.
+     * Rejects a non-CSV filename before opening the file; I/O failures propagate.
+     */
     public ProcessingReport read(Path source) throws IOException {
         if (source == null) {
             throw new IllegalArgumentException("Source path must not be null");
@@ -33,6 +37,7 @@ public final class DeliveryFileReader {
                 DiagnosticLogger logger = new DiagnosticLogger()) {
             String line;
             int lineNumber = 0;
+            // Physical line numbers remain accurate even when blank rows are ignored.
             while ((line = reader.readLine()) != null) {
                 lineNumber++;
                 if (line.isBlank()) {
@@ -84,6 +89,7 @@ public final class DeliveryFileReader {
                     skippedCount++;
                     continue;
                 }
+                // Only accepted rows reserve an ID; a bad earlier row cannot block it.
                 if (acceptedIds.contains(id)) {
                     logger.log(source, lineNumber, row.positions().getFirst(), id, "duplicate ID");
                     skippedCount++;
