@@ -143,12 +143,28 @@ If Task A retains the maximum compatible subset of size `k`, then every valid on
 
 ## 8. Input and presentation boundary
 
-The input layer reads headerless CSV, validates rows, records accepted/skipped counts, and writes diagnostics. It passes only accepted Delivery objects to scheduling. The JavaFX layer selects a file, invokes the chosen task, and displays processing context plus the task result. When rows are skipped, the processing context identifies the diagnostic log's actual location. After a file-open or read failure, the JavaFX layer clears the previously accepted dataset, disables task actions until another file loads successfully, and displays the error. The exact scene graph, styling, threading, and packaging remain implementation decisions.
+The input layer reads headerless CSV, validates rows, records accepted/skipped counts, and writes diagnostics. It passes only accepted Delivery objects to scheduling. The file chooser filters for `.csv` files, and the input boundary independently rejects a filename without a `.csv` extension (case-insensitive) before parsing rows. The extension check does not replace row validation for files bearing `.csv` names.
+
+The JavaFX layer holds one accepted dataset. After a successful load, it computes and shows all three task results on one page. When rows are skipped, the processing context identifies the diagnostic log's actual location. After a file-open failure, read failure, or non-CSV rejection, the JavaFX layer clears the previously accepted dataset, replaces the three results with an unavailable state, and displays the error. Scheduling resumes only after another CSV file loads successfully.
+
+### 8.1 Scheduling Workbench layout
+
+The approved desktop UI is the Operator Workbench. Its window uses a left sidebar and a scrollable main content area. The sidebar shows the application name, current file, and processing counts, with no navigation controls or `CSV files only` tagline. All results remain on the main page.
+
+The main area begins with `Scheduling Workbench`, the title `Delivery Analysis`, a `Choose CSV file…` control, and the processing status. Below it, three result sections appear in Task A, B, C order. Each section places its `Task A`, `Task B`, or `Task C` label above its title:
+
+1. `Maximum Deliveries for One Driver`
+2. `Minimum Drivers to Complete All Deliveries`
+3. `Deliveries Rejected for One Driver`
+
+Task A shows its selected count and delivery table. Task B shows its minimum driver count and each driver's schedule. Task C shows its count and describes it as deliveries to reject when only one driver is available. A zero Task C result also displays `No deliveries to reject.` Empty-file results use the corresponding zero counts and plain-language empty messages.
+
+The visual style follows the selected Workbench prototype: a dark slate sidebar (`#1d3041`) occupying about one quarter of the desktop width, a light neutral main background (`#f6f8fa`), white result sections, teal primary controls (`#087a71`), a readable sans-serif font, and prominent numeric counts. The exact JavaFX scene graph, threading, and packaging remain implementation decisions.
 
 ## 9. Verification design
 
-Use unit tests for Delivery and Driver contracts, scheduler tests for all required A–C cases, and integration tests for CSV validation and skipped-row reporting. Tests shall not require a particular optimal ID set or driver mapping when multiple valid results exist. They shall validate counts, compatibility, exactly-once assignment, immutability, and accepted-record boundaries.
+Use unit tests for Delivery and Driver contracts, scheduler tests for all required A–C cases, and focused file-reader integration tests for CSV validation, non-CSV rejection, and skipped-row reporting. Tests shall not require a particular optimal ID set or driver mapping when multiple valid results exist. They shall validate counts, compatibility, exactly-once assignment, immutability, and accepted-record boundaries.
 
 ## 10. Deferred implementation choices
 
-The following remain intentionally open until ticketing: exact package/class names, Maven plugins and test framework, JavaFX layout, parser/logging implementation, direct-call exception details, and distribution format. Task D remains outside this implementation baseline.
+The following remain intentionally open until ticketing: exact package/class names, Maven plugins and test framework, JavaFX control structure, parser/logging implementation, direct-call exception details, and distribution format. Task D remains outside this implementation baseline.

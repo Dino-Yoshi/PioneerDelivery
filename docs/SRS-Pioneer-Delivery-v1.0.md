@@ -49,13 +49,15 @@ The ID, start time, and finish time shall remain associated when records are reo
 ### 3.2 File processing
 
 - The file shall be headerless CSV with exactly `id,start_time,finish_time` fields per record.
+- The file chooser shall offer `.csv` files only. A supplied file whose name does not end in `.csv` (case-insensitive) shall fail before row processing, even if it bypasses the chooser.
 - Incidental surrounding whitespace may be trimmed.
 - Input order may be arbitrary.
 - Invalid rows shall be skipped, logged, and followed by continued processing of valid rows.
 - Invalid rows shall not be counted as Task C algorithmic rejections.
 - A successfully opened empty file is valid and produces zero-sized results.
 - A file-open or read failure is an error, not an empty dataset.
-- After a file-open or read failure, the application shall clear any previously accepted dataset, disable scheduling until a file loads successfully, and show the error.
+- A non-CSV file is a file-load error, not an empty dataset or a collection of invalid delivery rows.
+- After a file-open failure, read failure, or non-CSV rejection, the application shall clear any previously accepted dataset, disable scheduling until a file loads successfully, and show the error.
 - The processing report shall show total nonblank rows, accepted records, and skipped records.
 - Each skipped-row log entry shall include the source filename, line number, reason, readable ID when available, and character position when reasonably identifiable.
 - When rows are skipped, the user-facing summary shall state that results use accepted records only and show where to find the diagnostic log.
@@ -129,6 +131,7 @@ Required expected rejection counts:
 The implementation shall test all required cases for Tasks A–C, including empty input, unordered input, shared endpoints, overlapping intervals, and equal finish times. Tests shall also verify:
 
 - malformed rows are skipped and logged;
+- non-CSV files are rejected before row processing;
 - scheduling uses accepted records only;
 - IDs and interval fields remain associated and unchanged;
 - Task B assigns every accepted delivery exactly once;
@@ -143,6 +146,6 @@ The final submission shall include source code, a data file, and `README.md`. Th
 
 ## 9. Deferred scope
 
-The following are implementation-planning decisions, not changes to the accepted requirements: exact Java package placement, parser/logging classes, JavaFX screen layout, threading, packaging details, test framework, and direct-call exception policy.
+The following are implementation-planning decisions, not changes to the accepted requirements: exact Java package placement, parser/logging classes, JavaFX control structure, threading, packaging details, test framework, and direct-call exception policy.
 
 Task D remains deferred as a separate written counterexample and is not part of the first A–C GUI workflow.
