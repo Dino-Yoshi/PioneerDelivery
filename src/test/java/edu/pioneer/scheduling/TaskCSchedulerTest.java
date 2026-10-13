@@ -17,10 +17,7 @@ class TaskCSchedulerTest {
 
     @Test
     void threeMutuallyOverlappingDeliveriesRequireTwoRejections() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("A", 1, 5),
-                new Delivery("B", 2, 6),
-                new Delivery("C", 3, 7));
+        List<Delivery> deliveries = List.of(new Delivery("A", 1, 5), new Delivery("B", 2, 6), new Delivery("C", 3, 7));
 
         assertEquals(2, scheduler.countRejectedDeliveries(deliveries));
     }
@@ -32,44 +29,28 @@ class TaskCSchedulerTest {
 
     @Test
     void threeDeliveriesWithSharedEndpointsRequireNoRejections() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("A", 1, 3),
-                new Delivery("B", 3, 5),
-                new Delivery("C", 5, 7));
+        List<Delivery> deliveries = List.of(new Delivery("A", 1, 3), new Delivery("B", 3, 5), new Delivery("C", 5, 7));
 
         assertEquals(0, scheduler.countRejectedDeliveries(deliveries));
     }
 
     @Test
     void unorderedDeliveriesRequireOneRejection() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("A", 5, 7),
-                new Delivery("B", 1, 3),
-                new Delivery("C", 3, 5),
-                new Delivery("D", 2, 4));
+        List<Delivery> deliveries = List.of(new Delivery("A", 5, 7), new Delivery("B", 1, 3), new Delivery("C", 3, 5), new Delivery("D", 2, 4));
 
         assertEquals(1, scheduler.countRejectedDeliveries(deliveries));
     }
 
     @Test
     void longerDeliveryLosesToThreeCompatibleShorterDeliveries() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("A", 1, 2),
-                new Delivery("B", 2, 3),
-                new Delivery("C", 3, 4),
-                new Delivery("D", 1, 3));
+        List<Delivery> deliveries = List.of(new Delivery("A", 1, 2), new Delivery("B", 2, 3), new Delivery("C", 3, 4), new Delivery("D", 1, 3));
 
         assertEquals(1, scheduler.countRejectedDeliveries(deliveries));
     }
 
     @Test
     void rejectionCountEqualsAcceptedCountMinusTaskASelection() {
-        List<Delivery> deliveries = List.of(
-                new Delivery("A", 4, 6),
-                new Delivery("B", 1, 4),
-                new Delivery("C", 2, 4),
-                new Delivery("D", 6, 8),
-                new Delivery("E", 5, 7));
+        List<Delivery> deliveries = List.of(new Delivery("A", 4, 6), new Delivery("B", 1, 4), new Delivery("C", 2, 4), new Delivery("D", 6, 8), new Delivery("E", 5, 7));
 
         int selectedCount = new TaskAScheduler().selectDeliveries(deliveries).size();
 

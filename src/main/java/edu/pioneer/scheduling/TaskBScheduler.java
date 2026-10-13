@@ -13,8 +13,7 @@ public final class TaskBScheduler {
         List<Delivery> ordered = new ArrayList<>(deliveries);
         ordered.sort(Comparator.comparingInt(Delivery::getStartTime));
         List<Driver> drivers = new ArrayList<>();
-        PriorityQueue<Driver> availableByFinish = new PriorityQueue<>(
-                Comparator.comparingInt(Driver::getFinishTime));
+        PriorityQueue<Driver> availableByFinish = new PriorityQueue<>(Comparator.comparingInt(Driver::getFinishTime));
 
         for (Delivery delivery : ordered) {
             Driver driver;
