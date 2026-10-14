@@ -95,13 +95,17 @@ The following are the course assignment's six cases for each task. These observe
 
 ## Build and run
 
-Install JDK 25 and set `JAVA_HOME` to it. On Linux or macOS, launch from the repository root with:
+1. Install **JDK 25** and point `JAVA_HOME` at that JDK. Open a terminal in the repository root—the directory containing `pom.xml` and `mvnw`. You do **not** need to install Maven separately.
+2. Check that the Maven wrapper sees Java 25, then compile and launch:
 
-```sh
-./run.sh
-```
+   | Platform | Check Java used by Maven | Compile | Launch |
+   | --- | --- | --- | --- |
+   | Linux or macOS | `./mvnw -version` | `./mvnw clean compile` | `./run.sh` |
+   | Windows Command Prompt | `mvnw.cmd -version` | `mvnw.cmd clean compile` | `mvnw.cmd javafx:run` |
+   | Windows PowerShell | `.\mvnw.cmd -version` | `.\mvnw.cmd clean compile` | `.\mvnw.cmd javafx:run` |
 
-On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
+   The version check should report Java 25. If it reports another version, correct `JAVA_HOME` before compiling. The first run needs internet access to download Maven and JavaFX dependencies.
+3. In the JavaFX window, click **Choose CSV file…** and open `data/sample-deliveries.csv` (or any CSV in `data/`). The three task results appear on the same page. A graphical desktop session is required to launch the window.
 
 ## Run the test suite
 
