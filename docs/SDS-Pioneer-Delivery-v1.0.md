@@ -167,4 +167,4 @@ Use unit tests for Delivery and Driver contracts, scheduler tests for all requir
 
 ## 10. Deferred implementation choices
 
-The following remain intentionally open until ticketing: exact package/class names, Maven plugins and test framework, JavaFX control structure, parser/logging implementation, direct-call exception details, and distribution format. Task D remains outside this implementation baseline.
+The following were intentionally left open by this design baseline: exact package/class names, Maven plugins and test framework, JavaFX control structure, parser/logging implementation, direct-call exception details, and distribution format. Task D remains outside the A–C application design; its separate written answer is in [TaskD.md](TaskD.md).

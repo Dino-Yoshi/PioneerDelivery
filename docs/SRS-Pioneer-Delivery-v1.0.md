@@ -15,7 +15,7 @@ Pioneer Delivery receives delivery requests, each occupying a driver during a fi
 - **Task B:** accept every valid delivery using the minimum number of drivers.
 - **Task C:** determine the minimum number of deliveries to reject so one driver can perform the rest.
 
-Task D is a separate written counterexample involving flexible one-unit deliveries, ready times, and profits. It remains deferred from the first application workflow.
+Task D is a separate written counterexample involving flexible one-unit deliveries, ready times, and profits. Its completed answer is in [TaskD.md](TaskD.md); Task D is outside the Java application workflow.
 
 The application will be a Java desktop GUI. Tasks A–C shall remain usable independently of the GUI so their behavior can be tested directly.
 
@@ -142,10 +142,10 @@ No test results are claimed until executable code exists.
 
 ## 8. Submission requirements
 
-The final submission shall include source code, a data file, and `README.md`. The README shall include the language, build/run instructions, input format, test data, program organization, algorithm explanations for Tasks A–C, and required test results.
+The final submission shall include source code, a data file, and `README.md`. The README shall include the language, build/run instructions, input format, test data, program organization, algorithm explanations for Tasks A–C, and required test results. The separate written Task D answer is provided in [TaskD.md](TaskD.md).
 
 ## 9. Deferred scope
 
 The following are implementation-planning decisions, not changes to the accepted requirements: exact Java package placement, parser/logging classes, JavaFX control structure, threading, packaging details, test framework, and direct-call exception policy.
 
-Task D remains deferred as a separate written counterexample and is not part of the first A–C GUI workflow.
+Task D is documented separately in [TaskD.md](TaskD.md), not implemented in the A–C GUI workflow.

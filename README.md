@@ -1,41 +1,17 @@
 # Pioneer Delivery — Part I
 
-Pioneer Delivery is a Java 25 desktop application for fixed-interval delivery scheduling. Its Operator Workbench loads one CSV dataset and shows the results of Tasks A–C together. Task D is a separate written deliverable and is outside this application.
+This repository contains the complete CS 413 Part I submission. Tasks A–C are implemented in Java 25: the application reads fixed-interval deliveries from a CSV file and shows the three scheduling results. [Task D's written counterexample](docs/TaskD.md) addresses the separate ready-time-and-profit problem; it is not an application feature.
 
-## Build and run
+## Assignment deliverables
 
-Install JDK 25 and set `JAVA_HOME` to it. On Linux or macOS, launch from the repository root with:
+| Task | Required result | Where to find it |
+| --- | --- | --- |
+| A | Maximum compatible deliveries for one driver, with IDs and times | `TaskAScheduler` and the Task A workbench result |
+| B | Minimum drivers, with every delivery assigned to a driver | `TaskBScheduler` and the Task B workbench result |
+| C | Minimum deliveries rejected for one driver | `TaskCScheduler` and the Task C workbench result |
+| D | A counterexample to the proposed profit-first greedy strategy | [docs/TaskD.md](docs/TaskD.md) |
 
-```sh
-./run.sh
-```
-
-On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
-
-## Run the test suite
-
-With JDK 25 installed and `JAVA_HOME` set, use the one-command test launcher from the repository root:
-
-| Platform | Command |
-| --- | --- |
-| Linux or macOS | `./run-tests.sh` |
-| Windows Command Prompt | `run-tests.cmd` |
-| Windows PowerShell | `.\run-tests.cmd` |
-
-The launcher builds from a clean state, runs the entire JUnit suite without opening the GUI, and displays each test's actual result. For example, its output includes:
-
-```text
-PASS  Task A case 1  [data/ATestValues/case-1.csv]
-PASS  Task B case 6  [data/BTestValues/case-6.csv]
-PASS  Task C case 6  [data/CTestValues/case-6.csv]
-...
-Summary: 66 passed, 0 failed, 0 errors, 0 skipped
-Result: PASS
-```
-
-All 18 required CSV cases and the other tests are listed, not just the totals. A failed case shows its assertion message and makes the command exit unsuccessfully. The full readable output is saved in `target/test-results.txt`; Maven's build output is saved separately in `target/test-build.log`. No separate Maven installation is needed, but the first run needs internet access to download Maven and dependencies. To see Maven output directly, use `./mvnw clean verify` (or `mvnw.cmd clean verify` on Windows).
-
-## Input and example data
+## Input format and test data
 
 Input is a headerless `.csv` file with one delivery per line:
 
@@ -116,6 +92,39 @@ The following are the course assignment's six cases for each task. These observe
 | 4 | `(1, 5), (2, 6), (3, 7)` | 2 | 2 |
 | 5 | `(5, 7), (1, 3), (3, 5), (2, 4)` | 1 | 1 |
 | 6 | `(1, 2), (2, 3), (3, 4), (1, 3)` | 1 | 1 |
+
+## Build and run
+
+Install JDK 25 and set `JAVA_HOME` to it. On Linux or macOS, launch from the repository root with:
+
+```sh
+./run.sh
+```
+
+On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
+
+## Run the test suite
+
+With JDK 25 installed and `JAVA_HOME` set, use the one-command test launcher from the repository root:
+
+| Platform | Command |
+| --- | --- |
+| Linux or macOS | `./run-tests.sh` |
+| Windows Command Prompt | `run-tests.cmd` |
+| Windows PowerShell | `.\run-tests.cmd` |
+
+The launcher builds from a clean state, runs the entire JUnit suite without opening the GUI, and displays each test's actual result. For example, its output includes:
+
+```text
+PASS  Task A case 1  [data/ATestValues/case-1.csv]
+PASS  Task B case 6  [data/BTestValues/case-6.csv]
+PASS  Task C case 6  [data/CTestValues/case-6.csv]
+...
+Summary: 66 passed, 0 failed, 0 errors, 0 skipped
+Result: PASS
+```
+
+All 18 required CSV cases and the other tests are listed, not just the totals. A failed case shows its assertion message and makes the command exit unsuccessfully. The full readable output is saved in `target/test-results.txt`; Maven's build output is saved separately in `target/test-build.log`. No separate Maven installation is needed, but the first run needs internet access to download Maven and dependencies. To see Maven output directly, use `./mvnw clean verify` (or `mvnw.cmd clean verify` on Windows).
 
 ## Verification evidence
 
