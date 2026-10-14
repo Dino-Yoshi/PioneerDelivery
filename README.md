@@ -10,7 +10,30 @@ Install JDK 25 and set `JAVA_HOME` to it. On Linux or macOS, launch from the rep
 ./run.sh
 ```
 
-On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. To run the tests, use `./mvnw clean verify` (or `mvnw.cmd clean verify` on Windows). The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
+On Windows, run `mvnw.cmd javafx:run` instead. The Maven wrapper downloads Maven 3.9.11 on first use, so a separate Maven installation is unnecessary; the first run needs an internet connection. The launcher opens the JavaFX window in a graphical session; choose a file from `data/` to explore. The project uses JavaFX 25.0.2 and JUnit 5.11.4, which Maven resolves on the first build.
+
+## Run the test suite
+
+With JDK 25 installed and `JAVA_HOME` set, use the one-command test launcher from the repository root:
+
+| Platform | Command |
+| --- | --- |
+| Linux or macOS | `./run-tests.sh` |
+| Windows Command Prompt | `run-tests.cmd` |
+| Windows PowerShell | `.\run-tests.cmd` |
+
+The launcher builds from a clean state, runs the entire JUnit suite without opening the GUI, and displays each test's actual result. For example, its output includes:
+
+```text
+PASS  Task A case 1  [data/ATestValues/case-1.csv]
+PASS  Task B case 6  [data/BTestValues/case-6.csv]
+PASS  Task C case 6  [data/CTestValues/case-6.csv]
+...
+Summary: 66 passed, 0 failed, 0 errors, 0 skipped
+Result: PASS
+```
+
+All 18 required CSV cases and the other tests are listed, not just the totals. A failed case shows its assertion message and makes the command exit unsuccessfully. The full readable output is saved in `target/test-results.txt`; Maven's build output is saved separately in `target/test-build.log`. No separate Maven installation is needed, but the first run needs internet access to download Maven and dependencies. To see Maven output directly, use `./mvnw clean verify` (or `mvnw.cmd clean verify` on Windows).
 
 ## Input and example data
 
@@ -96,6 +119,6 @@ The following are the course assignment's six cases for each task. These observe
 
 ## Verification evidence
 
-On October 13, 2026, `./mvnw clean verify` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **66 tests, 0 failures, 0 errors, 0 skipped**. Besides the 18 CSV-backed required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the baseline sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count. The counts for the other example files in `data/` were checked by calling the same reader and schedulers directly.
+On October 13, 2026, `./run-tests.sh` completed with Eclipse Temurin JDK 25.0.4.1 and Maven 3.9.11: **66 tests, 0 failures, 0 errors, 0 skipped**. Besides the 18 CSV-backed required cases, these tests cover empty and malformed CSV files, duplicate IDs, non-CSV rejection, diagnostic counts, shared endpoints, equal finish times, unchanged accepted records, compatible schedules, and exactly-once Task B assignment. `SubmissionIntegrationTest` loads the baseline sample file and checks all three results; its mixed-row case confirms that skipped rows never enter any scheduler and that Task C uses the accepted count. The counts for the other example files in `data/` were checked by calling the same reader and schedulers directly. A deliberate CSV mismatch was reported as a failing case with a nonzero exit status; after restoring the fixture, the suite passed again. The Windows launcher is provided but was not run in this Linux verification environment.
 
 With the same JDK, `./run.sh` reached JavaFX startup and Maven exited successfully in a graphical session. This is a launch check, not an automated visual UI test.
